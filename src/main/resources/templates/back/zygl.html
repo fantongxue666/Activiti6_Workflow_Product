@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link th:href="@{../style/authority/main_css.css}" rel="stylesheet" type="text/css" />
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<link href="https://heerey525.github.io/layui-v2.4.3/layui/css/layui.css" rel="stylesheet" type="text/css">
+	<link th:href="@{../assets/css/layer.css}" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="https://heerey525.github.io/layui-v2.4.3/layui/layui.js"></script>
+	<script type="text/javascript" th:src="@{../scripts/zTree/layui.all.js}"></script>
+
+	<link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+
+
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<title>信息管理系统</title>
+<script type="text/javascript">
+
+
+</script>
+<style>
+	.alt td{ background:black !important;}
+	.ulObj{
+		margin-left: 4%;
+	}
+</style>
+</head>
+<body>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" style="width: 70%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">新增资源</h4>
+			</div>
+			<div class="modal-body">
+
+					<div class="form-group">
+						<label>资源名称</label>
+						<input type="text" class="form-control" name="name" id="deptno" placeholder="请输入资源名称">
+					</div>
+					<div class="form-group">
+						<label>百度网盘地址</label>
+						<input type="text" class="form-control" name="deptname" id="deptname" placeholder="请输入百度网盘地址">
+					</div>
+					<div class="form-group">
+						<label>分享密码</label>
+						<input type="text" class="form-control" name="pwd" id="pwd" placeholder="请输入分享密码">
+					</div>
+					<div class="form-group">
+						<label for="">选择分类</label>
+						<select name="kind" id="kind" class="form-control">
+							<option disabled selected>请选择</option>
+							<option value="视频资源">视频资源</option>
+							<option value="实用软件">实用软件</option>
+							<option value="电影">电影</option>
+							<option value="其他">其他</option>
+						</select>
+
+					</div>
+
+					<button id="submit" type="button" class="btn btn-default">提交</button>
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="close" class="btn btn-default" data-dismiss="modal">关闭</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+	<form id="submitForm" name="submitForm" action="" method="post">
+		<input type="hidden" name="allIDCheck" value="" id="allIDCheck"/>
+		<input type="hidden" name="fangyuanEntity.fyXqName" value="" id="fyXqName"/>
+		<div id="container">
+			<input type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary" style="float:right;margin-right: 5%;margin-bottom: 2%;" value="新增资源"></input>
+
+			<div class="ui_content">
+				<div class="ui_tb">
+					<table class="table table-bordered table-hover" style="margin:auto;width: 90%;" cellspacing="0" cellpadding="0" width="100%" align="center" border="0">
+						<tr>
+							<th style="text-align: center;">ID</th>
+							<th style="text-align: center;">资源名</th>
+							<th style="text-align: center;">地址</th>
+							<th style="text-align: center;">密码</th>
+							<th style="text-align: center;">分类</th>
+							<th style="text-align: center;">操作</th>
+						</tr>
+							<tr th:each="one:${list.list}">
+
+								<td style="text-align: center;" th:text="${one.id}"></td>
+								<td style="text-align: center;" th:text="${one.name}"></td>
+								<td style="text-align: center;" th:text="${one.url}"></td>
+								<td style="text-align: center;" th:text="${one.pwd}"></td>
+								<td style="text-align: center;" th:text="${one.kind}"></td>
+
+								<td style="text-align: center;">
+									<a href="javascript:;" onclick="scmx(this)" >删除</a>
+
+								</td>
+							</tr>
+						
+
+						
+					</table>
+				</div>
+				<div class="ui_tb_h30">
+					<div class="ui_flt" style="height: 30px; line-height: 30px;margin-left: 5%;margin-top: 3%;">
+						共有
+						<span class="ui_txt_bold04" th:text="${list.total}"></span>
+						条记录，当前第
+						<span class="ui_txt_bold04" th:text="${list.pageNum}">
+							页
+						</span>/<span class="ui_txt_bold04" th:text="${list.pages}"></span>页
+					</div>
+					<div class="ui_frt" style="float: right;margin-right: 6%; margin-top: -2%;">
+						<!--    如果是第一页，则只显示下一页、尾页 -->
+						
+						<a  th:href="@{/business/zygl?pn=1}" class="ui_input_btn01" >首页</a>
+						<a th:href="@{'/business/zygl?pn='+${list.pageNum-1}}" class="ui_input_btn01">上一页</a>
+							<a th:href="@{'/business/zygl?pn='+${list.pageNum+1}}" class="ui_input_btn01">下一页</a>
+							<a th:href="@{'/business/zygl?pn='+${list.pages}}" class="ui_input_btn01">尾页</a>
+						
+						
+						
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<div id="myAlert" class="alert alert-success" style="display: none;">
+		<a href="#" class="close" data-dismiss="alert" style="position: absolute;top: 0;">&times;</a>
+		<strong>新增资源成功！</strong>
+	</div>
+	<div id="myAlert1" class="alert alert-success" style="display: none;">
+		<a href="#" class="close" data-dismiss="alert" style="position: absolute;top: 0;">&times;</a>
+		<strong>删除成功！</strong>资源已删除！
+	</div>
+
+<script>
+
+	$("#submit").click(function () {
+		$.ajax({
+			url:"/business/insertZy",
+			data:{name:$("#deptno").val(),url:$("#deptname").val(),pwd:$("#pwd").val(),kind:$("#kind").val()},
+			type:"post",
+			dataType:"json",
+			success:function (data) {
+				if(data==1){
+                    $("#close").click();
+                    layer.msg('新增成功', {
+                        time: 1000, //2s后自动关闭
+                    });
+                    setTimeout(function () {
+                        window.location.href=window.location.href;
+                    },1000);
+				}else{
+                    layer.msg('操作失败，请检查网络配置', {icon: 1});
+				}
+            }
+		});
+    });
+
+
+    function scmx(e) {
+        var modelId=$(e).parent().parent().find("td").eq(0).html();
+        alert(modelId);
+        layer.confirm("确认删除该资源吗？",{btn:['确认','取消']},function () {
+            $.post(
+                "/business/delZy",
+                {id:modelId},
+                function (data) {
+                    layer.msg('删除成功', {
+                        time: 1000, //2s后自动关闭
+                    });
+                    setTimeout(function () {
+                        window.location.href=window.location.href;
+                    },1000);
+                }
+            );
+        },function () {
+			//取消之后的操作
+        })
+    }
+    
+
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>资源共享平台</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+<h3 class="mytitle" style="text-align: center;margin-bottom: 30px;font-weight: bold;margin-top: 50px;">资源共享平台</h3>
+
+<div class="container mycontainer">
+    <div class="col-md-6 col-xs-12">
+        <table class="table">
+            <caption style="text-shadow: gray 5px 5px 5px;">视频资源</caption>
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>资源名</th>
+                <th>保存</th>
+                <th>密码</th>
+            </tr>
+            </thead>
+            <tbody id="vedio">
+
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <table class="table">
+            <caption style="text-shadow: gray 5px 5px 5px;">实用软件</caption>
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>资源名</th>
+                <th>保存</th>
+                <th>密码</th>
+            </tr>
+            </thead>
+            <tbody id="software">
+            <tr>
+                <td>123</td>
+                <td>123</td>
+                <td>123</td>
+                <td>123</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <style>
+        table thead tr th{
+            font-family: 'Lato', sans-serif;
+            font-size: 16px;
+        }
+    </style>
+    <div class="col-md-6 col-xs-12">
+        <table class="table">
+            <caption style="text-shadow: gray 5px 5px 5px;">电影</caption>
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>资源名</th>
+                <th>保存</th>
+                <th>密码</th>
+            </tr>
+            </thead>
+            <tbody id="movies">
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <table class="table">
+            <caption style="text-shadow: gray 5px 5px 5px;">其它</caption>
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>资源名</th>
+                <th>保存</th>
+                <th>密码</th>
+            </tr>
+            </thead>
+            <tbody id="ma">
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<h5 class="suggestion share-footer" style="text-align: center;"><a href="mailto:mlzmail@qq.com?subject=资源共享反馈">反馈|共享</a> / fantongxue666@163.com</h5>
+<h5 class="suggestion" style="text-align: center;">更新时间：2020年10月05日23:28:23</h5>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+    $(function () {
+        $.ajax({
+            url:"/business/getZY",
+            type:"post",
+            success:function (data) {
+                console.log(data);
+               var list1 = data.spzy;
+               var list2 = data.syrj;
+               var list3 = data.dy;
+               var list4 = data.qt;
+
+               var tempStr1='';
+               for(var i=0;i<list1.length;i++){
+                   tempStr1+='<tr><td>'+(i+1)+'</td><td>'+list1[i].name+'</td><td><a target="_blank" href="'+list1[i].url+'">百度网盘</a></td><td>'+list1[i].pwd+'</td></tr>';
+               }
+                $("#vedio").html(tempStr1);
+
+               var tempStr2='';
+               for(var i=0;i<list2.length;i++){
+                   tempStr2+='<tr><td>'+(i+1)+'</td><td>'+list2[i].name+'</td><td><a target="_blank" href="'+list2[i].url+'">百度网盘</a></td><td>'+list2[i].pwd+'</td></tr>';
+               }
+                $("#software").html(tempStr2);
+
+                var tempStr3='';
+                for(var i=0;i<list3.length;i++){
+                    tempStr3+='<tr><td>'+(i+1)+'</td><td>'+list3[i].name+'</td><td><a target="_blank" href="'+list3[i].url+'">百度网盘</a></td><td>'+list3[i].pwd+'</td></tr>';
+                }
+                $("#movies").html(tempStr3);
+
+                var tempStr4='';
+                for(var i=0;i<list4.length;i++){
+                    tempStr4+='<tr><td>'+(i+1)+'</td><td>'+list4[i].name+'</td><td><a target="_blank" href="'+list4[i].url+'">百度网盘</a></td><td>'+list4[i].pwd+'</td></tr>';
+                }
+                $("#ma").html(tempStr4);
+            }
+        });
+    });
+</script>
+</body>
+</html>
